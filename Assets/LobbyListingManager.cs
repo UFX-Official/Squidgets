@@ -13,10 +13,10 @@ public class LobbyListingManager : MonoBehaviour
 
     public void Initialize(LobbyListing l)
     {
-        lobbyNameText.text = l.lobbyName;
-        lobbyGameModeText.text = l.lobbyGameMode.ToString();
-        lobbyMapText.text = l.lobbyMap.ToString();
-        lobbyPlayerCountText.text = l.currentPlayerCount + " / " + l.maxPlayerCount;
+        lobbyNameText.text = l.settings.lobbyName;
+        lobbyGameModeText.text = l.settings.lobbyGameMode.ToString();
+        lobbyMapText.text = l.settings.lobbyMap.ToString();
+        lobbyPlayerCountText.text = l.settings.currentPlayerCount + " / " + l.settings.maxPlayerCount;
     }
 
 }
