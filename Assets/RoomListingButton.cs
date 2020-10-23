@@ -32,18 +32,18 @@ public class RoomListingButton : MonoBehaviour
 
     #region Public Methods
 
-    public void SetRoom(string nameInput, int sizeInput, int countInput, string modeInput, string mapInput)
+    public void SetRoom(string nameInput, int sizeInput, int countInput, int modeInput, int mapInput)
     {
         roomName = nameInput;
         roomSize = sizeInput;
         playerCount = countInput;
-        roomMode = GameMode.GetModeByName(modeInput);
-        roomMap = GameMap.GetMapByName(mapInput);
+        roomMode = GameMode.GetModeByID(modeInput);
+        roomMap = GameMap.GetMapByID(mapInput);
 
         roomNameDisplay.text = nameInput;
         roomSizeDisplay.text = countInput + "/" + sizeInput;
-        roomModeDisplay.text = modeInput;
-        roomMapDisplay.text = mapInput;
+        roomModeDisplay.text = GameMode.GetNameByID(modeInput);
+        roomMapDisplay.text = GameMap.GetNameByID(mapInput);
     }
 
     public void JoinRoomOnClick()

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class SampleController : MonoBehaviour
 {
+    #region Variables
+
     public enum ControlMethod { MouseInput, KeyInput, ControllerInput }
     public ControlMethod controls;
 
-    public LineRenderer line = null;
-
+    LineRenderer line;
 
     Rigidbody2D rigid;
+
     float scale = 1.0f;
+    public float maxScale = 1.0f;
     public float minScale = 0.45f;
     public float rotationRate = 45;
 
@@ -22,10 +25,17 @@ public class SampleController : MonoBehaviour
 
     bool isGrounded = false;
     bool isCharging = false;
-    
+
+    #endregion
+
+    #region MonoBehaviour Callbacks
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        line = GameObject.Find("LineRenderer").GetComponent<LineRenderer>();
+
+        scale = maxScale;
     }
 
     public void Update()
@@ -33,9 +43,11 @@ public class SampleController : MonoBehaviour
         Controller();
 
         // ANIMATE
-        Vector3 local = transform.localScale;
-        transform.localScale = new Vector3(local.x, scale, local.y);
-        
+        {
+            Vector3 local = transform.localScale;
+            transform.localScale = new Vector3(local.x, scale, local.y);
+        }
+
         // CHECK GROUNDED     
         {
             RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -transform.up, transform.localScale.y * 1.25f);
@@ -49,15 +61,20 @@ public class SampleController : MonoBehaviour
             {
                 isGrounded = false;
             }
-        }        
+        }
     }
+
+
+    #endregion
+
+    #region Custom Methods
 
     public void Controller()
     {
         switch (controls)
         {
             case ControlMethod.KeyInput:
-                
+
                 // MOTION CONTROLS
                 {
                     // Begin Charging Leap
@@ -81,13 +98,13 @@ public class SampleController : MonoBehaviour
                     if (isGrounded && Input.GetKeyUp(KeyCode.Space))
                     {
                         rigid.AddForce(transform.up * (5 / scale), ForceMode2D.Impulse);
-                        scale = 1.0f;
+                        scale = maxScale;
                     }
-                    else if (isGrounded && !isCharging && scale < 1.0f)
+                    else if (isGrounded && !isCharging && scale < maxScale)
                     {
                         rigid.velocity = Vector3.zero;
                         rigid.AddForce(transform.up * (5 / scale), ForceMode2D.Impulse);
-                        scale = 1.0f;
+                        scale = maxScale;
                     }
                 }
 
@@ -125,19 +142,19 @@ public class SampleController : MonoBehaviour
                         isCharging = true;
                         line.enabled = true;
                     }
-                    
+
                     // Handle Charging Scaling
                     if (Input.GetMouseButton(0) && isCharging)
                     {
                         mouseUpPos = Input.mousePosition;
                         direction = mouseUpPos - mouseDownPos;
 
-                       // Debug.DrawLine(mouseDownPos, mouseUpPos);
+                        // Debug.DrawLine(mouseDownPos, mouseUpPos);
 
                         float charge = direction.magnitude / 500;
                         //Debug.Log(charge);
 
-                        float result = 1.0f - charge;
+                        float result = maxScale - charge;
 
                         if (result > minScale)
                             scale = result;
@@ -152,23 +169,19 @@ public class SampleController : MonoBehaviour
                     {
                         isCharging = false;
                         line.enabled = false;
-                        
-                        //Debug.Log("Start: [ " + mouseDownPos.x + " - " + mouseDownPos.y + " ]\n" +
-                        //    "End: [ " + mouseUpPos.x + " - " + mouseUpPos.y + " ]\n" +
-                        //    "Direction: [ " + direction.x + " - " + direction.y + " ]");
                     }
 
                     // If grounded and a charge was released, launch the player
                     if (isGrounded && Input.GetKeyUp(KeyCode.Space))
                     {
-                        rigid.AddForce(transform.up * (5 / scale), ForceMode2D.Impulse);
-                        scale = 1.0f;
+                        rigid.AddForce(transform.up * (2.5f / scale), ForceMode2D.Impulse);
+                        scale = maxScale;
                     }
-                    else if (isGrounded && !isCharging && scale < 1.0f)
+                    else if (isGrounded && !isCharging && scale < maxScale)
                     {
                         rigid.velocity = Vector3.zero;
-                        rigid.AddForce(transform.up * (5 / scale), ForceMode2D.Impulse);
-                        scale = 1.0f;
+                        rigid.AddForce(transform.up * (2.5f / scale), ForceMode2D.Impulse);
+                        scale = maxScale;
                     }
 
 
@@ -192,8 +205,8 @@ public class SampleController : MonoBehaviour
                         transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
                     }
 
-                    
-                    
+
+
                 }
 
                 // LINE DRAW
@@ -226,4 +239,11 @@ public class SampleController : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
+
+
+
+
+
 }

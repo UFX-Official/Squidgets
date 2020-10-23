@@ -92,9 +92,9 @@ GameObject:
   - component: {fileID: 8125019754255888875}
   - component: {fileID: 8125019754255888874}
   - component: {fileID: 8125019754255888873}
-  - component: {fileID: 6231404777917292287}
+  - component: {fileID: 327837375265680260}
   m_Layer: 5
-  m_Name: Lobby Listing
+  m_Name: RoomListing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,8 +232,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8125019754255888875}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &6231404777917292287
+      m_Calls:
+      - m_Target: {fileID: 327837375265680260}
+        m_TargetAssemblyTypeName: RoomListingButton, Assembly-CSharp
+        m_MethodName: JoinRoomOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &327837375265680260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,13 +254,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8125019754255888879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a3b57b1f4f28f429b7f8c582f9e9fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c168c28e4bb0dd45bdfab9a2e89be65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyNameText: {fileID: 8125019755100870321}
-  lobbyGameModeText: {fileID: 8125019755807241594}
-  lobbyMapText: {fileID: 8125019755581590720}
-  lobbyPlayerCountText: {fileID: 8125019753959993393}
+  roomNameDisplay: {fileID: 8125019755100870321}
+  roomModeDisplay: {fileID: 8125019755807241594}
+  roomMapDisplay: {fileID: 8125019755581590720}
+  roomSizeDisplay: {fileID: 8125019753959993393}
 --- !u!1 &8125019755100870327
 GameObject:
   m_ObjectHideFlags: 0

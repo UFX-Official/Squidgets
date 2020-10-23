@@ -2,8 +2,7 @@
 {
     public enum Map
     {
-        Default = 0,
-        DevStage = 1
+        DevTower = 0
     }
 
     public static Map GetMapByID(int id)
