@@ -17,9 +17,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
     Vector2 mouseUpPos = Vector2.zero;
     Vector2 mouseDownPos = Vector2.zero;
 
-    bool isCharging;
-    bool isGrounded; // Consider moving to server-sided variable for ability interactions on grounded/non-grounded characters
-    
+    bool isCharging = false;
+    bool isGrounded = false; // Consider moving to server-sided variable for ability interactions on grounded/non-grounded characters
+    bool isSwimming = false;
+
     #endregion
 
     #region Server-Side Variables
@@ -42,6 +43,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
         line = GameObject.Find("LineRenderer").GetComponent<LineRenderer>();
 
         scale = maxScale;
+
+        
     }
     
     private void Update()

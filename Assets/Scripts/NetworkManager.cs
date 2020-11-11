@@ -8,11 +8,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
     #region Client-Side Variables
 
+    [SerializeField] 
+    MyPlayer player = null;
+
     [SerializeField]
     GameObject playerPrefab = null;
 
     [SerializeField]
-    Transform[] spawnPoint = null;
+    static GameObject[] spawnPoint = null;
 
 
     [SerializeField] 
@@ -39,6 +42,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     #region MonoBehaviour Callbacks
 
+    private void Awake()
+    {
+        spawnPoint  = GameObject.FindGameObjectsWithTag("Respawn");        
+    }
+
     private void Start()
     {
         Debug.Log("Starting...");
@@ -50,15 +58,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             int index = Random.Range(0, spawnPoint.Length - 1);
 
-            GameObject playerObj = Instantiate(Resources.Load<GameObject>("Prefabs/SPController"), spawnPoint[index].position, Quaternion.identity);
-            Camera.main.GetComponent<CameraFollow>().SetTarget(playerObj.transform);
+            GameObject playerObj = Instantiate(Resources.Load<GameObject>("Prefabs/SPController"), spawnPoint[index].transform.position, Quaternion.identity);
+            player.Possess(playerObj.GetComponent<Controller>());
+            Camera.main.GetComponent<CameraFollow>().SetTarget(playerObj.transform);            
         }
 
         else if (PhotonNetwork.IsConnected)
         {
             int index = Random.Range(0, spawnPoint.Length - 1);
 
-            GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/" + playerPrefab.name, spawnPoint[index].position, Quaternion.identity, 0);
+            GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/" + playerPrefab.name, spawnPoint[index].transform.position, Quaternion.identity, 0);
             Camera.main.GetComponent<CameraFollow>().SetTarget(playerObj.transform);
 
         }
@@ -99,6 +108,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         playerVictoryDisplay.text = playerName + " has won!";
 
         gameComplete = true;
+    }
+
+    public static Transform GetRandomSpawnPoint()
+    {
+        int index = Random.Range(0, spawnPoint.Length - 1);
+        return spawnPoint[index].transform;
     }
 
     #endregion
